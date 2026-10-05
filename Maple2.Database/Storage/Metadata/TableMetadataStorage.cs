@@ -5,72 +5,72 @@ using Maple2.Model.Metadata;
 namespace Maple2.Database.Storage;
 
 public class TableMetadataStorage {
-    private readonly Lazy<ChatStickerTable> chatStickerTable;
-    private readonly Lazy<DefaultItemsTable> defaultItemsTable;
-    private readonly Lazy<ItemBreakTable> itemBreakTable;
-    private readonly Lazy<ItemExtractionTable> itemExtractionTable;
-    private readonly Lazy<GemstoneUpgradeTable> gemstoneUpgradeTable;
-    private readonly Lazy<JobTable> jobTable;
-    private readonly Lazy<MagicPathTable> magicPathTable;
-    private readonly Lazy<MasteryRecipeTable> masteryRecipeTable;
-    private readonly Lazy<MasteryRewardTable> masteryRewardTable;
-    private readonly Lazy<MasteryDifferentialFactorTable> masteryDifferentialFactorTable;
-    private readonly Lazy<FishingRodTable> fishingRodTable;
-    private readonly Lazy<InstrumentTable> instrumentTable;
-    private readonly Lazy<InteractObjectTable> interactObjectTable;
-    private readonly Lazy<LapenshardUpgradeTable> lapenshardUpgradeTable;
-    private readonly Lazy<ItemSocketTable> itemSocketTable;
-    private readonly Lazy<GuildTable> guildTable;
-    private readonly Lazy<PremiumClubTable> premiumClubTable;
-    private readonly Lazy<IndividualItemDropTable> individualItemDropTable;
-    private readonly Lazy<ColorPaletteTable> colorPaletteTable;
-    private readonly Lazy<MeretMarketCategoryTable> meretMarketCategoryTable;
-    private readonly Lazy<ShopBeautyCouponTable> shopBeautyCouponTable;
-    private readonly Lazy<FurnishingShopTable> furnishingShopTable;
-    private readonly Lazy<GachaInfoTable> gachaInfoTable;
-    private readonly Lazy<InsigniaTable> insigniaTable;
-    private readonly Lazy<ExpTable> expTable;
-    private readonly Lazy<CommonExpTable> commonExpTable;
-    private readonly Lazy<UgcDesignTable> ugcDesignTable;
-    private readonly Lazy<MasteryUgcHousingTable> masteryUgcHousingTable;
-    private readonly Lazy<UgcHousingPointRewardTable> ugcHousingPointRewardTable;
-    private readonly Lazy<LearningQuestTable> learningQuestTable;
-    private readonly Lazy<PrestigeLevelAbilityTable> prestigeLevelAbilityTable;
-    private readonly Lazy<PrestigeLevelRewardTable> prestigeLevelRewardTable;
-    private readonly Lazy<PrestigeMissionTable> prestigeMissionTable;
-    private readonly Lazy<BlackMarketTable> blackMarketTable;
-    private readonly Lazy<ChangeJobTable> changeJobTable;
-    private readonly Lazy<ChapterBookTable> chapterBookTable;
-    private readonly Lazy<FieldMissionTable> fieldMissionTable;
-    private readonly Lazy<WorldMapTable> worldMapTable;
-    private readonly Lazy<SurvivalSkinInfoTable> survivalSkinInfoTable;
-    private readonly Lazy<BannerTable> bannerTable;
-    private readonly Lazy<WeddingTable> weddingTable;
-    private readonly Lazy<RewardContentTable> rewardContentTable;
-    private readonly Lazy<SeasonDataTable> seasonDataTable;
-    private readonly Lazy<SmartPushTable> smartPushTable;
-    private readonly Lazy<AutoActionTable> autoActionTable;
+    private Lazy<ChatStickerTable> chatStickerTable = null!;
+    private Lazy<DefaultItemsTable> defaultItemsTable = null!;
+    private Lazy<ItemBreakTable> itemBreakTable = null!;
+    private Lazy<ItemExtractionTable> itemExtractionTable = null!;
+    private Lazy<GemstoneUpgradeTable> gemstoneUpgradeTable = null!;
+    private Lazy<JobTable> jobTable = null!;
+    private Lazy<MagicPathTable> magicPathTable = null!;
+    private Lazy<MasteryRecipeTable> masteryRecipeTable = null!;
+    private Lazy<MasteryRewardTable> masteryRewardTable = null!;
+    private Lazy<MasteryDifferentialFactorTable> masteryDifferentialFactorTable = null!;
+    private Lazy<FishingRodTable> fishingRodTable = null!;
+    private Lazy<InstrumentTable> instrumentTable = null!;
+    private Lazy<InteractObjectTable> interactObjectTable = null!;
+    private Lazy<LapenshardUpgradeTable> lapenshardUpgradeTable = null!;
+    private Lazy<ItemSocketTable> itemSocketTable = null!;
+    private Lazy<GuildTable> guildTable = null!;
+    private Lazy<PremiumClubTable> premiumClubTable = null!;
+    private Lazy<IndividualItemDropTable> individualItemDropTable = null!;
+    private Lazy<ColorPaletteTable> colorPaletteTable = null!;
+    private Lazy<MeretMarketCategoryTable> meretMarketCategoryTable = null!;
+    private Lazy<ShopBeautyCouponTable> shopBeautyCouponTable = null!;
+    private Lazy<FurnishingShopTable> furnishingShopTable = null!;
+    private Lazy<GachaInfoTable> gachaInfoTable = null!;
+    private Lazy<InsigniaTable> insigniaTable = null!;
+    private Lazy<ExpTable> expTable = null!;
+    private Lazy<CommonExpTable> commonExpTable = null!;
+    private Lazy<UgcDesignTable> ugcDesignTable = null!;
+    private Lazy<MasteryUgcHousingTable> masteryUgcHousingTable = null!;
+    private Lazy<UgcHousingPointRewardTable> ugcHousingPointRewardTable = null!;
+    private Lazy<LearningQuestTable> learningQuestTable = null!;
+    private Lazy<PrestigeLevelAbilityTable> prestigeLevelAbilityTable = null!;
+    private Lazy<PrestigeLevelRewardTable> prestigeLevelRewardTable = null!;
+    private Lazy<PrestigeMissionTable> prestigeMissionTable = null!;
+    private Lazy<BlackMarketTable> blackMarketTable = null!;
+    private Lazy<ChangeJobTable> changeJobTable = null!;
+    private Lazy<ChapterBookTable> chapterBookTable = null!;
+    private Lazy<FieldMissionTable> fieldMissionTable = null!;
+    private Lazy<WorldMapTable> worldMapTable = null!;
+    private Lazy<SurvivalSkinInfoTable> survivalSkinInfoTable = null!;
+    private Lazy<BannerTable> bannerTable = null!;
+    private Lazy<WeddingTable> weddingTable = null!;
+    private Lazy<RewardContentTable> rewardContentTable = null!;
+    private Lazy<SeasonDataTable> seasonDataTable = null!;
+    private Lazy<SmartPushTable> smartPushTable = null!;
+    private Lazy<AutoActionTable> autoActionTable = null!;
 
-    private readonly Lazy<EnchantScrollTable> enchantScrollTable;
-    private readonly Lazy<ItemRemakeScrollTable> itemRemakeScrollTable;
-    private readonly Lazy<ItemRepackingScrollTable> itemRepackingScrollTable;
-    private readonly Lazy<ItemSocketScrollTable> itemSocketScrollTable;
-    private readonly Lazy<ItemExchangeScrollTable> itemExchangeScrollTable;
+    private Lazy<EnchantScrollTable> enchantScrollTable = null!;
+    private Lazy<ItemRemakeScrollTable> itemRemakeScrollTable = null!;
+    private Lazy<ItemRepackingScrollTable> itemRepackingScrollTable = null!;
+    private Lazy<ItemSocketScrollTable> itemSocketScrollTable = null!;
+    private Lazy<ItemExchangeScrollTable> itemExchangeScrollTable = null!;
 
-    private readonly Lazy<ItemOptionConstantTable> itemOptionConstantTable;
-    private readonly Lazy<ItemOptionRandomTable> itemOptionRandomTable;
-    private readonly Lazy<ItemOptionStaticTable> itemOptionStaticTable;
-    private readonly Lazy<ItemOptionPickTable> itemOptionPickTable;
-    private readonly Lazy<ItemVariationTable> itemVariationTable;
-    private readonly Lazy<ItemEquipVariationTable> accVariationTable;
-    private readonly Lazy<ItemEquipVariationTable> armorVariationTable;
-    private readonly Lazy<ItemEquipVariationTable> petVariationTable;
-    private readonly Lazy<ItemEquipVariationTable> weaponVariationTable;
+    private Lazy<ItemOptionConstantTable> itemOptionConstantTable = null!;
+    private Lazy<ItemOptionRandomTable> itemOptionRandomTable = null!;
+    private Lazy<ItemOptionStaticTable> itemOptionStaticTable = null!;
+    private Lazy<ItemOptionPickTable> itemOptionPickTable = null!;
+    private Lazy<ItemVariationTable> itemVariationTable = null!;
+    private Lazy<ItemEquipVariationTable> accVariationTable = null!;
+    private Lazy<ItemEquipVariationTable> armorVariationTable = null!;
+    private Lazy<ItemEquipVariationTable> petVariationTable = null!;
+    private Lazy<ItemEquipVariationTable> weaponVariationTable = null!;
 
-    private readonly Lazy<DungeonRoomTable> dungeonRoomTable;
-    private readonly Lazy<DungeonRankRewardTable> dungeonRankRewardTable;
-    private readonly Lazy<DungeonConfigTable> dungeonConfigTable;
-    private readonly Lazy<DungeonMissionTable> dungeonMissionTable;
+    private Lazy<DungeonRoomTable> dungeonRoomTable = null!;
+    private Lazy<DungeonRankRewardTable> dungeonRankRewardTable = null!;
+    private Lazy<DungeonConfigTable> dungeonConfigTable = null!;
+    private Lazy<DungeonMissionTable> dungeonMissionTable = null!;
 
     public ChatStickerTable ChatStickerTable => chatStickerTable.Value;
     public DefaultItemsTable DefaultItemsTable => defaultItemsTable.Value;
@@ -139,7 +139,21 @@ public class TableMetadataStorage {
     public DungeonConfigTable DungeonConfigTable => dungeonConfigTable.Value;
     public DungeonMissionTable DungeonMissionTable => dungeonMissionTable.Value;
 
+    private readonly MetadataContext context;
+
     public TableMetadataStorage(MetadataContext context) {
+        this.context = context;
+        Load();
+    }
+
+    /// <summary>
+    /// Drops every loaded table so the next access re-reads it from the metadata database.
+    /// </summary>
+    public void InvalidateCache() {
+        Load();
+    }
+
+    private void Load() {
         chatStickerTable = Retrieve<ChatStickerTable>(context, TableNames.CHAT_EMOTICON);
         defaultItemsTable = Retrieve<DefaultItemsTable>(context, TableNames.DEFAULT_ITEMS);
         itemBreakTable = Retrieve<ItemBreakTable>(context, TableNames.ITEM_BREAK_INGREDIENT);

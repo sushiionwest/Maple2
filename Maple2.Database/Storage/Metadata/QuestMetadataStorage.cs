@@ -9,6 +9,13 @@ public class QuestMetadataStorage(MetadataContext context) : MetadataStorage<int
     private const int CACHE_SIZE = 8000; // 4.903 quests are in the database with NA feature, 7.2k quests in xmls
     private bool isInitialized;
 
+    public override void InvalidateCache() {
+        lock (Context) {
+            base.InvalidateCache();
+            isInitialized = false;
+        }
+    }
+
     public bool TryGet(int id, [NotNullWhen(true)] out QuestMetadata? quest) {
         if (Cache.TryGet(id, out quest)) {
             return true;

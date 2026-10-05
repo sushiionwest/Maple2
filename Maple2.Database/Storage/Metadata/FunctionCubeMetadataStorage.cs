@@ -5,13 +5,20 @@ using Maple2.Model.Metadata;
 namespace Maple2.Database.Storage;
 
 public class FunctionCubeMetadataStorage : MetadataStorage<int, FunctionCubeMetadata> {
-    protected readonly Dictionary<int, FunctionCubeMetadata> FunctionCubeMetadata;
+    protected Dictionary<int, FunctionCubeMetadata> FunctionCubeMetadata;
 
     public FunctionCubeMetadataStorage(MetadataContext context) : base(context, capacity: 500) {
-        FunctionCubeMetadata = new Dictionary<int, FunctionCubeMetadata>();
+        FunctionCubeMetadata = LoadAll();
+    }
 
-        foreach (FunctionCubeMetadata functionCube in context.FunctionCubeMetadata) {
-            FunctionCubeMetadata.Add(functionCube.Id, functionCube);
+    public override void InvalidateCache() {
+        base.InvalidateCache();
+        FunctionCubeMetadata = LoadAll();
+    }
+
+    private Dictionary<int, FunctionCubeMetadata> LoadAll() {
+        lock (Context) {
+            return Context.FunctionCubeMetadata.ToDictionary(functionCube => functionCube.Id);
         }
     }
 

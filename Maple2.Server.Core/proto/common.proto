@@ -322,12 +322,17 @@ message AdminRequest {
 
   message ListStringBoard {}
 
+  message ReloadMetadata {
+    repeated string targets = 1;
+  }
+
   int64 requester_id = 1;
   oneof request {
     Alert alert = 2;
     AddStringBoard add_string_board = 3;
     RemoveStringBoard remove_string_board = 4;
     ListStringBoard list_string_board = 5;
+    ReloadMetadata reload_metadata = 6;
   }
 }
 

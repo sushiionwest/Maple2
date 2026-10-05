@@ -128,6 +128,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(autofac => {
     autofac.RegisterType<TriggerCache>()
         .PropertiesAutowired()
         .SingleInstance();
+    autofac.RegisterType<MetadataReloader>()
+        .SingleInstance();
     autofac.RegisterType<PlayerInfoStorage>()
         .SingleInstance();
     autofac.RegisterType<WorldMapGraphStorage>()

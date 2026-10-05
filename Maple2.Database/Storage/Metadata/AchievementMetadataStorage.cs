@@ -11,6 +11,13 @@ public class AchievementMetadataStorage(MetadataContext context) : MetadataStora
 
     private readonly HashSet<ConditionType> cachedTypes = [];
 
+    public override void InvalidateCache() {
+        lock (Context) {
+            base.InvalidateCache();
+            cachedTypes.Clear();
+        }
+    }
+
     public bool TryGet(int id, [NotNullWhen(true)] out AchievementMetadata? achievement) {
         if (Cache.TryGet(id, out achievement)) {
             return true;

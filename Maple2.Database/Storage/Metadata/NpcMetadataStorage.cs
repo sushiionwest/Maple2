@@ -11,23 +11,36 @@ public class NpcMetadataStorage : MetadataStorage<int, NpcMetadata>, ISearchable
     private const int ANI_CACHE_SIZE = 2500;
     private const int MOB_BASE_ID = 20000000; // Starting id for mobs
 
-    private readonly Dictionary<string, HashSet<int>> tagLookup;
+    private Dictionary<string, HashSet<int>> tagLookup;
     protected readonly LRUCache<string, AnimationMetadata> AniCache;
 
     public NpcMetadataStorage(MetadataContext context) : base(context, CACHE_SIZE) {
-        tagLookup = new Dictionary<string, HashSet<int>>();
         AniCache = new LRUCache<string, AnimationMetadata>(ANI_CACHE_SIZE, (int) (ANI_CACHE_SIZE * 0.05));
+        tagLookup = IndexMobs();
+    }
 
-        foreach (NpcMetadata npc in Context.NpcMetadata.Where(npc => npc.Id > MOB_BASE_ID)) {
-            Cache.AddReplace(npc.Id, npc);
-            foreach (string tag in npc.Basic.MainTags) {
-                if (!tagLookup.ContainsKey(tag)) {
-                    tagLookup[tag] = [];
+    public override void InvalidateCache() {
+        base.InvalidateCache();
+        AniCache.Clear();
+        tagLookup = IndexMobs();
+    }
+
+    private Dictionary<string, HashSet<int>> IndexMobs() {
+        var lookup = new Dictionary<string, HashSet<int>>();
+        lock (Context) {
+            foreach (NpcMetadata npc in Context.NpcMetadata.Where(npc => npc.Id > MOB_BASE_ID)) {
+                Cache.AddReplace(npc.Id, npc);
+                foreach (string tag in npc.Basic.MainTags) {
+                    if (!lookup.ContainsKey(tag)) {
+                        lookup[tag] = [];
+                    }
+
+                    lookup[tag].Add(npc.Id);
                 }
-
-                tagLookup[tag].Add(npc.Id);
             }
         }
+
+        return lookup;
     }
 
     public bool TryGet(int id, [NotNullWhen(true)] out NpcMetadata? npc) {

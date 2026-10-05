@@ -17,6 +17,8 @@ public partial class ChannelService {
                 return Task.FromResult(AddStringBoard(request.AddStringBoard));
             case AdminRequest.RequestOneofCase.RemoveStringBoard:
                 return Task.FromResult(RemoveStringBoard(request.RemoveStringBoard));
+            case AdminRequest.RequestOneofCase.ReloadMetadata:
+                return Task.FromResult(ReloadMetadata(request.ReloadMetadata));
             default:
                 return Task.FromResult(new AdminResponse());
         }
@@ -62,6 +64,20 @@ public partial class ChannelService {
         server.AddEvent(gameEvent);
 
         return new AdminResponse();
+    }
+
+    private AdminResponse ReloadMetadata(AdminRequest.Types.ReloadMetadata reload) {
+        try {
+            IReadOnlyList<string> reloaded = metadataReloader.Reload(reload.Targets);
+            return new AdminResponse {
+                Message = $"reloaded {string.Join(", ", reloaded)}",
+            };
+        } catch (ArgumentException ex) {
+            return new AdminResponse {
+                Error = 1,
+                Message = ex.Message,
+            };
+        }
     }
 
     private AdminResponse RemoveStringBoard(AdminRequest.Types.RemoveStringBoard removeStringBoard) {

@@ -1,0 +1,9 @@
+// Example: make a monster tougher. Run `--dump npc Id=<id>` first to see the exact stat names.
+{
+  "table": "npc",
+  "key": { "Id": 21000001 },
+  "set": {
+    "Stat": { "Stats": { "Health": 1000000 } },
+    "Basic": { "Level": 99 }
+  }
+}

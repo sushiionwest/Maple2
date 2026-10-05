@@ -13,6 +13,8 @@ public partial class WorldService {
                 return Task.FromResult(RemoveStringBoard(request.RemoveStringBoard));
             case AdminRequest.RequestOneofCase.ListStringBoard:
                 return Task.FromResult(ListStringBoards());
+            case AdminRequest.RequestOneofCase.ReloadMetadata:
+                return Task.FromResult(ReloadMetadata(request));
             default:
                 return Task.FromResult(new AdminResponse());
         }
@@ -38,6 +40,34 @@ public partial class WorldService {
 
         return new AdminResponse {
             Message = responseMessage,
+        };
+    }
+
+    private AdminResponse ReloadMetadata(AdminRequest request) {
+        string responseMessage = string.Empty;
+        int error = 0;
+        foreach (int channel in channelClients.Keys) {
+            if (!channelClients.TryGetClient(channel, out Channel.Service.Channel.ChannelClient? channelClient)) {
+                responseMessage += $"Channel {channel}: not found\n";
+                error = 1;
+                continue;
+            }
+
+            try {
+                AdminResponse channelResponse = channelClient.Admin(request);
+                responseMessage += $"Channel {channel}: {channelResponse.Message}\n";
+                if (channelResponse.Error > 0) {
+                    error = channelResponse.Error;
+                }
+            } catch (RpcException ex) {
+                responseMessage += $"Channel {channel}: {ex.Status.Detail}\n";
+                error = 1;
+            }
+        }
+
+        return new AdminResponse {
+            Error = error,
+            Message = responseMessage.TrimEnd(),
         };
     }
 

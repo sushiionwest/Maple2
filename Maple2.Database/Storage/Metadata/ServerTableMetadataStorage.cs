@@ -6,30 +6,30 @@ using Maple2.Model.Metadata;
 namespace Maple2.Database.Storage;
 
 public class ServerTableMetadataStorage {
-    private readonly Lazy<InstanceFieldTable> instanceFieldTable;
-    private readonly Lazy<ScriptConditionTable> scriptConditionTable;
-    private readonly Lazy<ScriptFunctionTable> scriptFunctionTable;
-    private readonly Lazy<ScriptEventConditionTable> scriptEventConditionTable;
-    private readonly Lazy<JobConditionTable> jobConditionTable;
-    private readonly Lazy<BonusGameTable> bonusGameTable;
-    private readonly Lazy<GlobalDropItemBoxTable> globalDropItemBoxTable;
-    private readonly Lazy<UserStatTable> userStatTable;
-    private readonly Lazy<IndividualDropItemTable> individualDropItemTable;
-    private readonly Lazy<PrestigeExpTable> prestigeExpTable;
-    private readonly Lazy<PrestigeIdExpTable> prestigeIdExpTable;
-    private readonly Lazy<TimeEventTable> timeEventTable;
-    private readonly Lazy<GameEventTable> gameEventTable;
-    private readonly Lazy<OxQuizTable> oxQuizTable;
-    private readonly Lazy<ItemMergeTable> itemMergeTable;
-    private readonly Lazy<ShopTable> shopTable;
-    private readonly Lazy<ShopItemTable> shopItemTable;
-    private readonly Lazy<BeautyShopTable> beautyShopTable;
-    private readonly Lazy<MeretMarketTable> meretMarketTable;
-    private readonly Lazy<FishTable> fishTable;
-    private readonly Lazy<CombineSpawnTable> combineSpawnTable;
-    private readonly Lazy<EnchantOptionTable> enchantOptionTable;
-    private readonly Lazy<UnlimitedEnchantOptionTable> unlimitedEnchantOptionTable;
-    private readonly Lazy<ConstantsTable> constantsTable;
+    private Lazy<InstanceFieldTable> instanceFieldTable = null!;
+    private Lazy<ScriptConditionTable> scriptConditionTable = null!;
+    private Lazy<ScriptFunctionTable> scriptFunctionTable = null!;
+    private Lazy<ScriptEventConditionTable> scriptEventConditionTable = null!;
+    private Lazy<JobConditionTable> jobConditionTable = null!;
+    private Lazy<BonusGameTable> bonusGameTable = null!;
+    private Lazy<GlobalDropItemBoxTable> globalDropItemBoxTable = null!;
+    private Lazy<UserStatTable> userStatTable = null!;
+    private Lazy<IndividualDropItemTable> individualDropItemTable = null!;
+    private Lazy<PrestigeExpTable> prestigeExpTable = null!;
+    private Lazy<PrestigeIdExpTable> prestigeIdExpTable = null!;
+    private Lazy<TimeEventTable> timeEventTable = null!;
+    private Lazy<GameEventTable> gameEventTable = null!;
+    private Lazy<OxQuizTable> oxQuizTable = null!;
+    private Lazy<ItemMergeTable> itemMergeTable = null!;
+    private Lazy<ShopTable> shopTable = null!;
+    private Lazy<ShopItemTable> shopItemTable = null!;
+    private Lazy<BeautyShopTable> beautyShopTable = null!;
+    private Lazy<MeretMarketTable> meretMarketTable = null!;
+    private Lazy<FishTable> fishTable = null!;
+    private Lazy<CombineSpawnTable> combineSpawnTable = null!;
+    private Lazy<EnchantOptionTable> enchantOptionTable = null!;
+    private Lazy<UnlimitedEnchantOptionTable> unlimitedEnchantOptionTable = null!;
+    private Lazy<ConstantsTable> constantsTable = null!;
 
     public InstanceFieldTable InstanceFieldTable => instanceFieldTable.Value;
     public ScriptConditionTable ScriptConditionTable => scriptConditionTable.Value;
@@ -56,7 +56,21 @@ public class ServerTableMetadataStorage {
     public UnlimitedEnchantOptionTable UnlimitedEnchantOptionTable => unlimitedEnchantOptionTable.Value;
     public ConstantsTable ConstantsTable => constantsTable.Value;
 
+    private readonly MetadataContext context;
+
     public ServerTableMetadataStorage(MetadataContext context) {
+        this.context = context;
+        Load();
+    }
+
+    /// <summary>
+    /// Drops every loaded table so the next access re-reads it from the metadata database.
+    /// </summary>
+    public void InvalidateCache() {
+        Load();
+    }
+
+    private void Load() {
         instanceFieldTable = Retrieve<InstanceFieldTable>(context, ServerTableNames.INSTANCE_FIELD);
         scriptConditionTable = Retrieve<ScriptConditionTable>(context, ServerTableNames.SCRIPT_CONDITION);
         scriptFunctionTable = Retrieve<ScriptFunctionTable>(context, ServerTableNames.SCRIPT_FUNCTION);

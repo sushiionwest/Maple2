@@ -24,14 +24,24 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 bool runNavmesh = false;
 bool dropData = false;
+bool modsOnly = false;
+string[]? dumpArgs = null;
 
-foreach (string arg in args) {
-    switch (arg) {
+for (int i = 0; i < args.Length; i++) {
+    switch (args[i]) {
         case "--run-navmesh":
             runNavmesh = true;
             break;
         case "--drop-data":
             dropData = true;
+            break;
+        case "--mods-only":
+            modsOnly = true;
+            break;
+        case "--dump":
+            // --dump <table> <column>=<value> [<column>=<value>...]
+            dumpArgs = args[(i + 1)..];
+            i = args.Length;
             break;
     }
 }
@@ -40,6 +50,12 @@ foreach (string arg in args) {
 CultureInfo.CurrentCulture = new CultureInfo("en-US");
 
 DotEnv.Load();
+
+if (modsOnly || dumpArgs != null) {
+    // Mod tooling only needs the metadata database, not client files.
+    using MetadataContext modContext = ModTool.Connect();
+    Environment.Exit(dumpArgs != null ? ModTool.Dump(modContext, dumpArgs) : ModTool.Apply(modContext));
+}
 
 string? languageEnv = Environment.GetEnvironmentVariable("LANGUAGE");
 if (languageEnv == null) {
@@ -232,6 +248,11 @@ var mapDataMapper = new MapDataMapper(metadataContext, xBlockParser);
 UpdateDatabase(metadataContext, mapDataMapper);
 
 mapDataMapper.ReportStats();
+
+// Reapply local mods on top of the freshly ingested data.
+if (ModTool.Apply(metadataContext) != 0) {
+    Environment.ExitCode = 1;
+}
 
 if (runNavmesh) {
     _ = new NavMeshMapper(metadataContext, exportedReader);

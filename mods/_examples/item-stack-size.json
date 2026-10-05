@@ -1,0 +1,10 @@
+// Example: raise the stack size of an item and rename it.
+// Copy into mods/ (outside _examples) and change the id to one from `find item <name>`.
+{
+  "table": "item",
+  "key": { "Id": 50400001 },
+  "set": {
+    "Name": "Mega Potion",
+    "Property": { "SlotMax": 9999 }
+  }
+}

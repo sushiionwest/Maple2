@@ -98,6 +98,9 @@ services:
       DB_IP: mysql
       GRPC_GAME_IP: game-ch1
       GRPC_WORLD_IP: world
+      MODS_FOLDER: /mods
+    volumes:
+      - ./mods:/mods:ro
 
   game-ch2:
     build:
@@ -120,6 +123,9 @@ services:
       DB_IP: mysql
       GRPC_GAME_IP: game-ch2
       GRPC_WORLD_IP: world
+      MODS_FOLDER: /mods
+    volumes:
+      - ./mods:/mods:ro
 
   # Channel 0 is instanced content only
   game-ch0:
@@ -144,6 +150,9 @@ services:
       GRPC_GAME_IP: game-ch0
       GRPC_WORLD_IP: world
       INSTANCED_CONTENT: true
+      MODS_FOLDER: /mods
+    volumes:
+      - ./mods:/mods:ro
 
   web:
     build:

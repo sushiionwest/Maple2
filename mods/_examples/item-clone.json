@@ -1,0 +1,14 @@
+// Example: create a new server-side item by copying an existing one.
+// The client only knows ids from its own data files, so pick an id the client already has
+// (for example one that is unused on this server), or patch the client too.
+[
+  {
+    "table": "item",
+    "clone": { "Id": 50400001 },
+    "key": { "Id": 50400002 },
+    "set": {
+      "Name": "Will's Potion",
+      "Limit": { "Level": 1 }
+    }
+  }
+]

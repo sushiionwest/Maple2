@@ -16,6 +16,11 @@ public class SkillMetadataStorage : MetadataStorage<(int, short), SkillMetadata>
         EffectCache = new(EFFECT_CACHE_SIZE, (int) (EFFECT_CACHE_SIZE * 0.05));
     }
 
+    public override void InvalidateCache() {
+        base.InvalidateCache();
+        EffectCache.Clear();
+    }
+
     public bool TryGet(int id, short level, [NotNullWhen(true)] out SkillMetadata? skill) {
         if (Cache.TryGet((id, level), out skill)) {
             return true;

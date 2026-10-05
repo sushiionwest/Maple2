@@ -12,14 +12,22 @@ public class MapMetadataStorage : MetadataStorage<int, MapMetadata>, ISearchable
     private const int UGC_CACHE_SIZE = 200;
 
     protected readonly LRUCache<int, UgcMapMetadata> UgcCache;
-    protected readonly Dictionary<string, ExportedUgcMapMetadata> ExportedUgcCache; // only 17 entries
+    protected Dictionary<string, ExportedUgcMapMetadata> ExportedUgcCache; // only 17 entries
 
     public MapMetadataStorage(MetadataContext context) : base(context, CACHE_SIZE) {
         UgcCache = new LRUCache<int, UgcMapMetadata>(UGC_CACHE_SIZE, (int) (UGC_CACHE_SIZE * 0.05));
-        ExportedUgcCache = [];
+        ExportedUgcCache = LoadExportedUgc();
+    }
 
-        foreach (ExportedUgcMapMetadata exportedUgcMap in context.ExportedUgcMapMetadata) {
-            ExportedUgcCache.Add(exportedUgcMap.Id, exportedUgcMap);
+    public override void InvalidateCache() {
+        base.InvalidateCache();
+        UgcCache.Clear();
+        ExportedUgcCache = LoadExportedUgc();
+    }
+
+    private Dictionary<string, ExportedUgcMapMetadata> LoadExportedUgc() {
+        lock (Context) {
+            return Context.ExportedUgcMapMetadata.ToDictionary(map => map.Id);
         }
     }
 
